@@ -1,30 +1,30 @@
 const mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost/fetcher');
+mongoose.connect('mongodb://localhost/fetcher', { useMongoClient: true });
 
 //define schema
 let repoSchema = new mongoose.Schema({
-  fullName : String,
-  owner_id : Number,
-  private : Boolean,
-  URL : String,
-  description : String
+  id: {type: Number, unique: true},
+  fullName: String,
+  owner_id: Number,
+  private: Boolean,
+  URL: String,
+  description: String
 });
 
 // compiling our schema
 let Repo = mongoose.model('UserList', repoSchema);
 
 // function to save schema into database
-let save = (err, data) => {
-  if (err) {
-    return console.log(err);
-  } else {
-    console.log(data);
-    // filteres the user info
-    let userInfo = new Repo( data.map(item) => {return })
+let save = (data, callback) => {
+  let baby = new Repo(data);
+  console.log(baby);
 
-    //saves the user information
-    userInfo.save()
-  }
+  baby.save(function (err){
+    if (err) {
+      callback(err);
+    }
+  });
+
 }
 
 module.exports.save = save;
